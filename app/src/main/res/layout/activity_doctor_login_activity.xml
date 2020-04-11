@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".Doctor_login_activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/water_icon"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Email"
+            android:textColorHint="#D3D3D3"
+            android:textColor="#ffffff"
+            android:fontFamily="@font/stawixsoinsansseueroman"
+            android:inputType="textEmailAddress"
+            android:layout_marginHorizontal="20dp"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Password"
+            android:textColor="#ffffff"
+            android:textColorHint="#D3D3D3"
+            android:fontFamily="@font/stawixsoinsansseueroman"
+            android:inputType="textPassword"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:layout_gravity="right"
+            android:fontFamily="@font/stawixsoinsansseueroman"
+            android:textColor="#ffffff"
+            android:layout_marginRight="20dp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="right">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_bg"
+            android:layout_marginHorizontal="20dp"
+            android:backgroundTint="#D3D3D3"
+            android:text="Sign In"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

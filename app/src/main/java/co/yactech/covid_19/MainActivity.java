@@ -29,7 +29,16 @@ public class MainActivity extends AppCompatActivity {
         doc_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "doc login", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "doc login", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(MainActivity.this,Doctor_login_activity.class);
+                startActivity(i);
+            }
+        });
+        pat_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this,Patient_login_activity.class);
+                startActivity(i);
             }
         });
 
