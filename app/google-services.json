@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "643041542727",
+    "firebase_url": "https://covid-19-eab70.firebaseio.com",
+    "project_id": "covid-19-eab70",
+    "storage_bucket": "covid-19-eab70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643041542727:android:3fae8feadf4fc8117ba762",
+        "android_client_info": {
+          "package_name": "co.yactech.covid_19"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "643041542727-k19onpkkus3142dq1akshrpk4hds8cl8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.yactech.covid_19",
+            "certificate_hash": "e82323b163117bc62c8b8ea9e5cb6df233242e8a"
+          }
+        },
+        {
+          "client_id": "643041542727-ps41mpo7t3ic0hbdrailcifrt5s22nhe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHimKu6Mp4SGxnVxwmhMcRlkZPFDxwW6E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "643041542727-ps41mpo7t3ic0hbdrailcifrt5s22nhe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

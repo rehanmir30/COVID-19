@@ -28,15 +28,17 @@
         android:gravity="center"
         android:orientation="vertical">
         <EditText
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Email"
+            android:hint="Enter Username"
             android:textColorHint="#D3D3D3"
             android:textColor="#ffffff"
             android:inputType="textEmailAddress"
             android:layout_marginHorizontal="20dp"
             />
         <EditText
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Password"
@@ -62,6 +64,7 @@
         android:gravity="right">
 
         <Button
+            android:id="@+id/signin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button_bg"
