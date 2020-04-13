@@ -2,10 +2,17 @@ package co.yactech.covid_19;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -26,6 +33,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+
 import co.yactech.covid_19.Model.Doctor;
 import co.yactech.covid_19.Model.Patient;
 
@@ -36,10 +45,11 @@ public class SignUp_Activity extends AppCompatActivity {
     Button create_account;
 
     EditText name, email, phone, password, confirm_password, address;
+    ImageView image;
     String Email, Password;
 
     private static final String[] occuptation = new String[]{"Doctor", "Patient"};
-
+    private Uri filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +65,20 @@ public class SignUp_Activity extends AppCompatActivity {
         password = findViewById(R.id.password);
         confirm_password = findViewById(R.id.confirm_password);
         address = findViewById(R.id.address);
+        image = findViewById(R.id.image);
 
         create_account = findViewById(R.id.create_account);
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, occuptation);
         actv.setAdapter(adapter);
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+            }
+        });
 
 
         create_account.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +112,7 @@ public class SignUp_Activity extends AppCompatActivity {
                 } else if (!(actv.getText().toString().equals(occuptation[0])) && !(actv.getText().toString().equals(occuptation[1]))) {
                     actv.setError("No such catagory found");
                     return;
-                } else if (actv.getText().toString().equals(occuptation[0])){
+                } else if (actv.getText().toString().equals(occuptation[0])) {
                     final ProgressDialog mDialogue = new ProgressDialog(SignUp_Activity.this);
                     mDialogue.setMessage("Please wait...");
                     mDialogue.show();
@@ -113,10 +131,10 @@ public class SignUp_Activity extends AppCompatActivity {
                                 return;
                             } else {
                                 mDialogue.dismiss();
-                                Doctor user = new Doctor(name.getText().toString(),email.getText().toString(), password.getText().toString(),phone.getText().toString(),address.getText().toString());
-                              //  int count= (int) dataSnapshot.child("Doctor").getChildrenCount();
+                                Doctor user = new Doctor(name.getText().toString(), email.getText().toString(), password.getText().toString(), phone.getText().toString(), address.getText().toString());
+                                //  int count= (int) dataSnapshot.child("Doctor").getChildrenCount();
                                 myRef.child(name.getText().toString()).setValue(user);
-                                Toast.makeText(SignUp_Activity.this, "Doctor added. Welcome!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUp_Activity.this, "Doctor added. Welcome!", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
 
@@ -129,8 +147,7 @@ public class SignUp_Activity extends AppCompatActivity {
                     });
 
 
-
-                }else if (actv.getText().toString().equals(occuptation[1])){
+                } else if (actv.getText().toString().equals(occuptation[1])) {
                     final ProgressDialog mDialogue = new ProgressDialog(SignUp_Activity.this);
                     mDialogue.setMessage("Please wait...");
                     mDialogue.show();
@@ -149,7 +166,7 @@ public class SignUp_Activity extends AppCompatActivity {
                                 return;
                             } else {
                                 mDialogue.dismiss();
-                                Patient user = new Patient(name.getText().toString(),email.getText().toString(), password.getText().toString(),phone.getText().toString(),address.getText().toString());
+                                Patient user = new Patient(name.getText().toString(), email.getText().toString(), password.getText().toString(), phone.getText().toString(), address.getText().toString());
                                 myRef.child(name.getText().toString()).setValue(user);
                                 Toast.makeText(SignUp_Activity.this, "Patient added. Welcome!", Toast.LENGTH_LONG).show();
                                 finish();
@@ -164,10 +181,8 @@ public class SignUp_Activity extends AppCompatActivity {
                     });
 
 
-
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Something went wrong, Try again later",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Something went wrong, Try again later", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -187,4 +202,41 @@ public class SignUp_Activity extends AppCompatActivity {
             }
         });
     }
+
+    private void chooseImage() {
+
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+            //TODO: sending image to server:
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(galleryIntent, 1);
+
+        }
+
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == 1 && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath);
+                //image.setImageBitmap(bitmap);
+                image.setImageBitmap(Bitmap.createScaledBitmap(bitmap,250,250,false));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }
