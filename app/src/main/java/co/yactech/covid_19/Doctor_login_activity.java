@@ -3,6 +3,7 @@ package co.yactech.covid_19;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -53,7 +54,9 @@ public class Doctor_login_activity extends AppCompatActivity {
                             if (dataSnapshot.child(username.getText().toString()).exists()){
                                 String Password= dataSnapshot.child(username.getText().toString()).child("password").getValue().toString();
                                 if (Password.equals(password.getText().toString())){
-                                    Toast.makeText(getApplicationContext(),"correct logins",Toast.LENGTH_SHORT).show();
+                                    Intent i =new Intent(Doctor_login_activity.this,Doctor_Profile.class);
+                                    i.putExtra("doc_username",username.getText().toString());
+                                    startActivity(i);
                                 }else {
                                     Toast.makeText(getApplicationContext(),"wrong logins",Toast.LENGTH_SHORT).show();
                                     return;

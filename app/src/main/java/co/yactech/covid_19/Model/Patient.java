@@ -6,11 +6,11 @@ public class Patient {
 
     String Username,Email,Password,Image,Phone,address;
 
-    public Patient(String username, String email, String password, String phone, String address) {
+    public Patient(String username, String email, String password, String phone, String address,String image) {
         Username = username;
         Email = email;
         Password = password;
-       // Image = image;
+        Image = image;
         Phone = phone;
         this.address = address;
     }

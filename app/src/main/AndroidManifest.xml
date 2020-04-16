@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Patient_login_activity"></activity>
+        <activity android:name=".Patient_Profile"></activity>
+        <activity android:name=".Doctor_Profile" />
+        <activity android:name=".Patient_login_activity" />
         <activity android:name=".Doctor_login_activity" />
         <activity android:name=".SignUp_Activity" />
         <activity android:name=".MainActivity" />

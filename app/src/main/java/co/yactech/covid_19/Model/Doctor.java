@@ -3,13 +3,17 @@ package co.yactech.covid_19.Model;
 public class Doctor {
     String Username,Email,Password,Image,Phone,address;
 
-    public Doctor(String username, String email, String password, String phone, String address) {
+    public Doctor(String username, String email, String password, String phone, String address,String image) {
         Username = username;
         Email = email;
         Password = password;
         Phone = phone;
+        Image=image;
         this.address = address;
     }
+//    public  Doctor(){
+//
+//    }
 
     public String getUsername() {
         return Username;

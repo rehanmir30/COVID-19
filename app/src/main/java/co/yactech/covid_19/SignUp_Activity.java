@@ -23,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,8 +34,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import co.yactech.covid_19.Model.Doctor;
 import co.yactech.covid_19.Model.Patient;
@@ -48,13 +55,19 @@ public class SignUp_Activity extends AppCompatActivity {
     ImageView image;
     String Email, Password;
 
+    FirebaseStorage storage;
+    StorageReference storageReference;
+
     private static final String[] occuptation = new String[]{"Doctor", "Patient"};
     private Uri filePath;
+    private String Img=UUID.randomUUID().toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_);
+
+
 
         back = findViewById(R.id.back);
         actv = findViewById(R.id.actv);
@@ -68,6 +81,9 @@ public class SignUp_Activity extends AppCompatActivity {
         image = findViewById(R.id.image);
 
         create_account = findViewById(R.id.create_account);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, occuptation);
@@ -131,8 +147,9 @@ public class SignUp_Activity extends AppCompatActivity {
                                 return;
                             } else {
                                 mDialogue.dismiss();
-                                Doctor user = new Doctor(name.getText().toString(), email.getText().toString(), password.getText().toString(), phone.getText().toString(), address.getText().toString());
+                                Doctor user = new Doctor(name.getText().toString(), email.getText().toString(), password.getText().toString(), phone.getText().toString(), address.getText().toString(),Img);
                                 //  int count= (int) dataSnapshot.child("Doctor").getChildrenCount();
+                               // uploadImage();
                                 myRef.child(name.getText().toString()).setValue(user);
                                 Toast.makeText(SignUp_Activity.this, "Doctor added. Welcome!", Toast.LENGTH_SHORT).show();
                                 finish();
@@ -166,7 +183,7 @@ public class SignUp_Activity extends AppCompatActivity {
                                 return;
                             } else {
                                 mDialogue.dismiss();
-                                Patient user = new Patient(name.getText().toString(), email.getText().toString(), password.getText().toString(), phone.getText().toString(), address.getText().toString());
+                                Patient user = new Patient(name.getText().toString(), email.getText().toString(), password.getText().toString(), phone.getText().toString(), address.getText().toString(),Img);
                                 myRef.child(name.getText().toString()).setValue(user);
                                 Toast.makeText(SignUp_Activity.this, "Patient added. Welcome!", Toast.LENGTH_LONG).show();
                                 finish();
@@ -213,11 +230,6 @@ public class SignUp_Activity extends AppCompatActivity {
             startActivityForResult(galleryIntent, 1);
 
         }
-
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -237,6 +249,46 @@ public class SignUp_Activity extends AppCompatActivity {
             }
         }
     }
+
+private void uploadImage(){
+
+    if(filePath != null)
+    {
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+
+        StorageReference ref = storageReference.child("images/"+ Img );
+        ref.putFile(filePath)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                        Toast.makeText(SignUp_Activity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(SignUp_Activity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                .getTotalByteCount());
+                        progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                    }
+                });
+
+    }
+
+}
+
+
 
 
 }
